@@ -19,6 +19,7 @@ Then run:
 export DIGITALOCEAN_TOKEN="token here"
 terraform init
 terraform apply
+ansible-playbook -u user -i '1.1.1.1,' --private-key ~/.ssh/file init.yml
 ```
 
 ## Todos:

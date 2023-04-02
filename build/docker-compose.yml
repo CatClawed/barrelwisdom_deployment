@@ -33,9 +33,6 @@ services:
     - 4000:4000
     depends_on:
       - backend
-    volumes:
-      - nodemodules:/frontend/node_modules
-      - ../../barrelwisdom/frontend:/frontend
 
   memcached:
     container_name: bw_memcached_prod
@@ -47,9 +44,6 @@ services:
       - -m 64
 
 volumes:
-  nodemodules:
-    external: true
-    name: docker_nodemodules
   bw_database:
     external: true
     name: docker_bw_database
