@@ -1,0 +1,45 @@
+services:
+  postgres:
+    image: postgres:15.1
+    container_name: postgres
+    restart: always
+    environment:
+      - 'POSTGRES_USER=${DB_USER}'
+      - 'POSTGRES_PASSWORD=${DB_PASSWORD}'
+      - 'POSTGRES_DB=barrelwisdom'
+    volumes:
+      - bw_database:/var/lib/postgresql/data:rw
+
+  backend:
+    container_name: backend
+    build:
+      context: ./barrelwisdom/backend
+      dockerfile: Dockerfile.prod
+    environment:
+      - 'SECRET_KEY=${SECRET_KEY}'
+      - 'DEBUG=${DEBUG}'
+      - 'DB_PASSWORD=${DB_PASSWORD}'
+      - 'DB_USER=${DB_USER}'
+    depends_on:
+      - postgres
+    volumes:
+      - ./barrelwisdom/backend:/backend:rw
+    restart: always
+
+  frontend:
+    container_name: frontend
+    image: barrelwisdom/frontend:PreRyza3
+    restart: always
+    ports:
+      - 4000:4000
+
+  memcached:
+    container_name: memcached
+    image: memcached:1.6.19-alpine3.17
+    entrypoint:
+      - memcached
+      - -m 64
+    restart: always
+
+volumes:
+  bw_database: {}

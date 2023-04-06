@@ -1,10 +1,15 @@
 variable "do_token" {
-  type = string
+  type      = string
   sensitive = true
 }
 
 variable "pvt_key" {
   type = string
+}
+
+variable "pub_key" {
+  type = string
+  sensitive = true
 }
 
 variable "os_image" {
@@ -31,16 +36,21 @@ variable "ssh_key_name" {
   type = string
 }
 
+variable "domain" {
+  type    = string
+  default = "test.barrelwisdom.com"
+}
+
 variable "username" {
   type = string
 }
 
 variable "cloudflare_api_token" {
-  type = string
+  type      = string
   sensitive = true
 }
 
 variable "cloudflare_zone_id" {
-  type = string
+  type      = string
   sensitive = true
 }

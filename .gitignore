@@ -31,5 +31,5 @@ override.tf.json
 terraform.rc
 
 *.gpg
-user-data.yml
 .env
+dump.json.gz

@@ -1,0 +1,18 @@
+- name: Get Barrel Wisdom repo for backend side of project
+  ansible.builtin.git:
+    repo: "https://github.com/CatClawed/barrelwisdom.git"
+    dest: ~/barrelwisdom
+    depth: 1
+    version: dev
+
+- name: Copy docker compose
+  ansible.builtin.copy:
+    src: files/docker-compose.yml
+    dest: ~/docker-compose.yml
+
+- name: Docker compose up
+  ansible.builtin.command: "{{ item }}"
+  with_items:
+    - chmod +x barrelwisdom/backend/run_django.sh
+    - docker compose build
+    - docker compose up -d

@@ -3,8 +3,9 @@ variable "do_token" {
   sensitive = true
 }
 
-variable "pvt_key" {
+variable "pub_key" {
   type = string
+  sensitive = true
 }
 
 variable "os_image" {

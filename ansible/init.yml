@@ -1,75 +1,10 @@
 - hosts: all
   name: Initial server setup
 
-  tasks:
-  - name: Update package cache
-    become: yes
-    ansible.builtin.apt:
-      update_cache: true
-      upgrade: yes
-
-  - name: Install packages
-    become: yes
-    ansible.builtin.apt:
-      pkg:
-        - ca-certificates
-        - curl
-        - gnupg
-        - git
-        - unattended-upgrades
-        - fail2ban
-        - ufw
-
-  - name: Add repository into sources list
-    become: yes
-    shell: |
-      mkdir -m 0755 -p /etc/apt/keyrings
-      curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-      echo "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-  - name: Install Docker
-    become: yes
-    ansible.builtin.apt:
-      name:
-        - docker-ce
-        - docker-ce-cli
-        - containerd.io
-        - docker-buildx-plugin
-        - docker-compose-plugin
-      state: latest
-      update_cache: true
-
-  - name: Security
-    become: yes
-    shell: |
-      echo unattended-upgrades unattended-upgrades/enable_auto_updates boolean true | debconf-set-selections
-      sudo dpkg-reconfigure -f noninteractive unattended-upgrades
-      sudo sed -i -e '/^PermitRootLogin/s/^.*$/PermitRootLogin no/' /etc/ssh/sshd_config
-      sudo systemctl restart sshd 
-
-  - name: ufw enabled
-    become: yes
-    community.general.ufw:
-      state: "enabled"
-      policy: "deny"
-      logging: "on"
-      
-  - name: ufw rules
-    become: yes
-    community.general.ufw:
-      rule: "allow"
-      port: "{{ item }}"
-      proto: "tcp"
-    with_items:
-      - "22"
-      - "80"
-      - "443"
-      
-  - name: Get repo
-    ansible.builtin.git:
-      repo: "https://github.com/CatClawed/{{ item }}.git"
-      dest: ~/{{ item }}
-      depth: 1
-    with_items:
-      - "barrelwisdom"
-      - "barrelwisdom_deployment"
+  roles:
+    - update-system
+    - role: setup
+      domain: "{{ domain }}"
+      user: "{{ user }}"
+    - update-db
+    - update-bw

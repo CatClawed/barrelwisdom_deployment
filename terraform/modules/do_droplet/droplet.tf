@@ -8,15 +8,7 @@ resource "digitalocean_droplet" "this" {
   ssh_keys = [
     data.digitalocean_ssh_key.terraform.id
   ]
-  user_data = file("./user-data.yml")
-
-  connection {
-    host        = self.ipv4_address
-    user        = var.username
-    type        = "ssh"
-    private_key = file(var.pvt_key)
-    timeout     = "2m"
-  }
+  user_data = templatefile("${path.module}/user-data.tftpl", { user = var.username, pub_key = var.pub_key })
 }
 
 output "droplet_ip" {

@@ -1,0 +1,19 @@
+#cloud-config
+
+groups:
+  - admingroup: [root,sys]
+  - cloud
+  - docker
+
+# Add users to the system. Users are added after groups are added.
+users:
+  - default
+  - name: ${user}
+    gecos: ${user}
+    shell: /bin/bash
+    primary_group: cloud
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, admin, docker
+    lock_passwd: true
+    ssh_authorized_keys:
+      - ${pub_key}

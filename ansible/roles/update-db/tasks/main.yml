@@ -1,0 +1,4 @@
+- name: Upload database dump
+  ansible.builtin.copy:
+    src: files/dump.json.gz
+    dest: ~/barrelwisdom/backend/db_updates/

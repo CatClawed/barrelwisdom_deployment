@@ -1,0 +1,6 @@
+# Always update DB first.
+- hosts: all
+  name: Initial server setup
+  roles:
+    - update-db
+    - update-bw

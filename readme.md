@@ -1,17 +1,33 @@
-A better way to deploy Barrel Wisdom. In progress. Terraform confirmed working, need to work on Docker images and some extra configuration.
+A better way to deploy Barrel Wisdom. I learned Terraform and Ansible and suddenly I want to solve all of life's problems using them.
+
+# So what does this do?
+
+* Creates necessary infrastructure (VPS, DNS records) to deploy a website.
+* Ansible configures the VPS to actually deploy the website.
+* Deploys updates on demand.
+
+Why? The old process was just cumbersome.
+
+* Once I started using Docker for development, I had to undo a couple settings Docker specific settings for production (such as not pointing to the 'postgres' container)
+* I would clone my repo and then rsync the Database side of it into a folder. Feels silly now.
+* I had to zip up my frontend build, and then I'd generally use Cyberduck to transfer the file.
+* Always manually backed up my old files in case something caught on fire. Though in my current implementation, if my backend catches fire, guess I gotta get a backup (have done the backup of shame before) or fix it on the fly.
+* Had to import data and migrate DB manually. Now Django has a script that just looks for a dump file. I should make that a loop over every gz file.
+
+# How to use
 
 To build infrastructure, create a `terraform.tfvars` with the following:
 
 ```
-ssh_key_name         =
-username             =
-pvt_key              =
+ssh_key_name         = whatever the digital ocean name is
+username             = 
+pvt_key              = key location
 do_token             = 
 cloudflare_api_token =
 cloudflare_zone_id   =
+domain               = "test.example.com"
+pub_key              = 
 ```
-
-Then make a cloud init file at `terraform/user-data.yml`. Current version installs docker and not much else.
 
 Then run:
 
@@ -19,13 +35,6 @@ Then run:
 export DIGITALOCEAN_TOKEN="token here"
 terraform init
 terraform apply
-ansible-playbook -u user -i '1.1.1.1,' --private-key ~/.ssh/file init.yml
+# for updates
+ansible-playbook -u user -i '1.1.1.1,' --private-key ~/.ssh/file update-bw.yml
 ```
-
-## Todos:
-
-* Figure out how to get certbot, etc. going
-* Further security measures (disallowing ports, etc)
-* Work out the best way to deploy Django
-* Figure out data syncing between home and remote device
-* Auto generate database credentials on deployment
