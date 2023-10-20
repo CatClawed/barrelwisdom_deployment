@@ -4,6 +4,7 @@
     dest: ~/barrelwisdom
     depth: 1
     version: dev
+    force: yes
 
 - name: Copy docker compose
   ansible.builtin.copy:
