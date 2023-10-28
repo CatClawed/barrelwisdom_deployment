@@ -28,7 +28,7 @@ services:
 
   frontend:
     container_name: frontend
-    image: barrelwisdom/frontend:10-20.2
+    image: barrelwisdom/frontend:10-28.5
     restart: always
     ports:
       - 127.0.0.1:4000:4000
