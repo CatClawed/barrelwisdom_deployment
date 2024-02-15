@@ -19,19 +19,19 @@ module "cloudflare_dns_live" {
   cloudflare_zone_id   = var.cloudflare_zone_id
 }
 
-/*
 resource "null_resource" "ansible_setup" {
   depends_on = [
     module.digitalocean_live.droplet_ip
   ]
   provisioner "local-exec" {
     command = <<-EOT
-      ansible-playbook --ssh-common-args='-o StrictHostKeyChecking=no' -u ${var.username} -i '${module.digitalocean_live.droplet_ip},' --private-key ${var.pvt_key} ../ansible/init.yml --extra-vars 'domain=${var.domain} user=${var.username}'
+      sleep 30 && ansible-playbook --ssh-common-args='-o StrictHostKeyChecking=no' -u ${var.username} -i '${module.digitalocean_live.droplet_ip},' --private-key ${var.pvt_key} ../ansible/init.yml --extra-vars 'domain=${var.domain} user=${var.username}'
     EOT
   }
-}*/
+}
 
-/*
+/* For test servers before rolling out major changes. Rare usage. */
+
 module "digitalocean_test" {
   source         = "./modules/do_droplet"
   do_token       = var.do_token
@@ -59,7 +59,7 @@ resource "null_resource" "ansible_setup_test" {
   ]
   provisioner "local-exec" {
     command = <<-EOT
-      sleep 30 && ansible-playbook --ssh-common-args='-o StrictHostKeyChecking=no' -u ${var.username} -i '${module.digitalocean_test.droplet_ip},' --private-key ${var.pvt_key} ../ansible/init.yml --extra-vars 'domain=test.barrelwisdom.com: user=${var.username}'
+      sleep 30 && ansible-playbook --ssh-common-args='-o StrictHostKeyChecking=no' -u ${var.username} -i '${module.digitalocean_test.droplet_ip},' --private-key ${var.pvt_key} ../ansible/init.yml --extra-vars 'domain=test.barrelwisdom.com user=${var.username}'
     EOT
   }
-}*/
+}

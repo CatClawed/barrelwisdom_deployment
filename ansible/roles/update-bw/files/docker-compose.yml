@@ -25,10 +25,12 @@ services:
     volumes:
       - ./barrelwisdom/backend:/backend:rw
     restart: always
+    ports:
+      - 127.0.0.1:8000:8000
 
   frontend:
     container_name: frontend
-    image: barrelwisdom/frontend:10-28.5
+    image: barrelwisdom/frontend:test
     restart: always
     ports:
       - 127.0.0.1:4000:4000

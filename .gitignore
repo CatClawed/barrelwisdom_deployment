@@ -33,3 +33,4 @@ terraform.rc
 *.gpg
 .env
 dump.json.gz
+.vscode

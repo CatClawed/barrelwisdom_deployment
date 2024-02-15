@@ -8,7 +8,7 @@ A better way to deploy Barrel Wisdom. I learned Terraform and Ansible and sudden
 
 Why? The old process was just cumbersome.
 
-* Once I started using Docker for development, I had to undo a couple settings Docker specific settings for production (such as not pointing to the 'postgres' container)
+* Once I started using Docker for development, I had to undo a couple Docker specific settings for production (such as not pointing to the 'postgres' container)
 * I would clone my repo and then rsync the Database side of it into a folder. Feels silly now.
 * I had to zip up my frontend build, and then I'd generally use Cyberduck to transfer the file.
 * Always manually backed up my old files in case something caught on fire. Though in my current implementation, if my backend catches fire, guess I gotta get a backup (have done the backup of shame before) or fix it on the fly.
